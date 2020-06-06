@@ -103,7 +103,7 @@ button:disabled {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    max-height: 100vh;
+    height: 100vh;
 }
 
 .chat__messages {
@@ -180,4 +180,13 @@ button:disabled {
     list-style-type: none;
     font-weight: 300;
     padding: 12px 24px 0 24px;
+}
+
+@media (max-width: 480px) {
+    .hidden-m { display: none; }
+    #sidebar { display: none; }
+    .compose { display: block; }
+    .compose button { width: 100%; margin-top: 5px; }
+    #message-form { display: block; width: 100%;}
+    #send-location { width: 100%; }
 }
