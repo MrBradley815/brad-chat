@@ -5,6 +5,7 @@ const $messageForm = document.querySelector('#message-form')
 const $messageFormInput = $messageForm.querySelector('input')
 const $messageFormButton = $messageForm.querySelector('button')
 const $messages = document.querySelector('#messages')
+const $typing = document.querySelector('#typing')
 
 // Templates
 const messageTemplate = document.querySelector('#message-template').innerHTML
@@ -36,12 +37,17 @@ const autoscroll = () => {
     }
 }
 
+socket.on('userTyping', (data) => {
+    $typing.innerHTML = `<p><em>${data}</em></p>`
+})
+
 socket.on('message', (message) => {
     const html = Mustache.render(messageTemplate, {
         username: message.username,
         message: message.text,
         createdAt: moment(message.createdAt).format('h:mm a')
     })
+    $typing.innerHTML = ''
     $messages.insertAdjacentHTML('beforeend', html)
     autoscroll()
 })
@@ -70,6 +76,10 @@ $messageForm.addEventListener('submit', (e) => {
             return console.log(error)
         }
     })
+})
+
+$messageFormInput.addEventListener('keypress', () => {
+    socket.emit('userTyping', 'User is typing...')
 })
 
 socket.emit('join', { username, room }, (error) => {

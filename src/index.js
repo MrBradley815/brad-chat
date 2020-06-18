@@ -47,6 +47,10 @@ io.on('connection', (socket) => {
         callback()
     })
 
+    socket.on('userTyping', (data) => {
+        socket.broadcast.emit('userTyping', data)
+    })
+
     socket.on('disconnect', () => {
         const user = removeUser(socket.id)
 
